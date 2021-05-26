@@ -3,6 +3,10 @@ import hashlib
 import sys
 
 
+with open('password.txt', 'r',) as text:
+    content = text.read()
+
+
 def request_api_data(query_char):
     url = f'https://api.pwnedpasswords.com/range/{query_char}'
     res = requests.get(url)
@@ -27,16 +31,16 @@ def pwned_api_check(password):
     return get_password_leak_count(response, remaining_char)
 
 
-def main(args):
-    for password in args:
-        count = pwned_api_check(password)
-        if count:
-            print(
-                f'PASSWORD {password} was found {count} times, You should change it!')
-        else:
-            print(f'PASSWORD: {password} is CLEAR!')
+def main(password):
+
+    count = pwned_api_check(password)
+    if count:
+        print(
+            f'PASSWORD {password} was found {count} times, You should change it!')
+    else:
+        print(f'PASSWORD: {password} is CLEAR!')
     return 'DONE'
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(content))
